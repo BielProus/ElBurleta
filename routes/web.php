@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\JokeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -28,3 +29,4 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 // Recurso completo para los posts
 Route::resource('posts', PostController::class);
 
+Route::get('jokes', [JokeController::class,'index'])->name('jokes.index');
