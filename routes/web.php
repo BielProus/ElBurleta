@@ -30,3 +30,4 @@ Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show')
 Route::resource('posts', PostController::class);
 
 Route::get('jokes', [JokeController::class,'index'])->name('jokes.index');
+Route::get('jokes/{joke}', [JokeController::class,'show'])->name('jokes.show');
