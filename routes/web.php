@@ -5,29 +5,25 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\JokeController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// Grupo de rutas protegidas por autenticación
+// Rutas protegidas por autenticación
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Permitir a cualquier usuario autenticado añadir comentarios
-    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store')->middleware('auth');
+    // Rutas de posts (excepto index y show, que son públicas)
+    Route::resource('posts', PostController::class)->except(['index', 'show']);
 
-    // Solo administradores pueden eliminar comentarios, validado en el controlador
-    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
+    // Ruta para añadir comentarios (solo usuarios autenticados)
+    Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
+    // Ruta para eliminar comentarios (solo administradores)
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])
+        ->name('comments.destroy')
+        ->middleware('admin'); // Middleware personalizado para administradores
 });
 
-// Rutas públicas para ver posts
+// Rutas públicas para visualizar posts
 Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
 Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
-// Recurso completo para los posts
-Route::resource('posts', PostController::class);
-
-Route::get('jokes', [JokeController::class,'index'])->name('jokes.index');
-Route::get('jokes/{joke}', [JokeController::class,'show'])->name('jokes.show');
