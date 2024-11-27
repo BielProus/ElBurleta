@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -13,13 +13,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens;
-
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory;
-    use HasProfilePhoto;
-    use Notifiable;
-    use TwoFactorAuthenticatable;
+    use HasApiTokens, HasFactory, HasProfilePhoto, Notifiable, TwoFactorAuthenticatable;
 
     /**
      * The attributes that are mass assignable.
@@ -30,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'is_admin',
     ];
 
     /**
@@ -54,30 +49,37 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * The attributes that should be cast.
      *
-     * @return array<string, string>
+     * @var array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean', // Asegura que 'is_admin' se maneje como booleano
+        'password' => 'hashed', // Este es nativo de Laravel 10+
+    ];
 
-    public function posts() : HasMany
+    /**
+     * Relación con los posts del usuario.
+     */
+    public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
     }
 
-    public function comments() : HasMany
+    /**
+     * Relación con los comentarios del usuario.
+     */
+    public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
     }
 
-    public function isAdmin() : bool
+    /**
+     * Verifica si el usuario es administrador.
+     */
+    public function isAdmin(): bool
     {
-        return $this->email === 'admin@gmail.com';
+        return $this->id === 12; // Convierte el valor explícitamente a booleano
     }
 }
