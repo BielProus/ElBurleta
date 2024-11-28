@@ -72,8 +72,15 @@ return [
     | and the user is authenticated. You are free to change this value.
     |
     */
+    
+    // AL INICIAR SESIÓN QUE TE LLEVE A POSTS
+    'home' => '/posts',
 
-    'home' => '/dashboard',
+    // AL PULSAR LOGOUT TE LLEVA A LA PÁGINA LOGGIN
+    'redirects' => [
+        'logout' => '/login', // Redirige al login después del logout
+        'login' => '/login',  // Redirige al login (opcional)
+    ],
 
     /*
     |--------------------------------------------------------------------------
