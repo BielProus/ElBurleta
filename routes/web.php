@@ -13,6 +13,8 @@ use App\Http\Controllers\CommentController;
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::post('/posts/create', [PostController::class, 'store'])->name('posts.store');
     Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 });
 

@@ -18,14 +18,14 @@
 					<form action="{{route('posts.store')}}" method="POST">
 						@csrf
 						<p>
-							<label for="titol">Titol</label> <input type="text" id="titol"
-								name="titol" class="@error('titol') is-invalid @enderror">
+							<label for="titol">Titol</label> <input type="text" id="titlte"
+								name="title" class="@error('titol') is-invalid @enderror">
 						</p>
 						<p>
 							<label for="contingut">Contingut</label><input type="text"
-								id="contingut" name="contingut"
+								id="content" name="content"
 								class="@error('contingut') alert-danger @enderror">
-							@error('contingut')
+							@error('content')
 						
 								<div class="alert alert-danger">{{ $message }}</div>
 							@enderror
