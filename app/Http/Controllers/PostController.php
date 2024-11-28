@@ -32,12 +32,7 @@ class PostController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StorePostRequest $request)
-    {
-        // Solo permite la creación si el usuario tiene el ID 12
-        if (Auth::id() !== 12) {
-            abort(403, 'No tienes permiso para crear un post.');
-        }
-
+    {       
         Post::create([
             'title' => $request->title,
             'content' => $request->content,
@@ -60,10 +55,6 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        // Verifica si el usuario autenticado tiene el ID 12
-        if (Auth::id() !== 12) {
-            abort(403, 'No tienes permiso para editar este post.');
-        }
 
         return view('posts.edit', compact('post'));
     }
@@ -72,16 +63,8 @@ class PostController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdatePostRequest $request, Post $post)
-    {
-        // Solo permite la actualización si el usuario tiene el ID 12
-        if (Auth::id() !== 12) {
-            abort(403, 'No tienes permiso para actualizar este post.');
-        }
-
-        $post->update([
-            'title' => $request->title,
-            'content' => $request->content,
-        ]);
+    {   
+        $post->update($request->all());
 
         return redirect()->route('posts.index')->with('success', 'Post actualizado exitosamente.');
     }

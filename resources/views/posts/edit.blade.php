@@ -10,7 +10,8 @@
 					<form action="{{route('posts.update',$post->id)}}" method="POST">
 					@csrf
 					<input type="hidden" name="_method" value="PUT">
-						Titol:<br> <input type="text" name="titol" value="{{$post->titol}}"> <br> Contingut:<br> <textarea name="contingut" rows="10" cols="30"> {{$post->contingut}}</textarea><br> user_id<br> <input type="number"
+						Titol:<br> <input type="text" name="title" value="{{$post->title}}"> <br> 
+						Contingut:<br> <textarea name="content" rows="10" cols="30"> {{$post->content}}</textarea><br> user_id<br> <input type="number"
 							name="user_id" value="{{$post->user_id}}"> <br>
 						<br> <input type="submit" value="Submit">
 					</form>
