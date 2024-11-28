@@ -77,9 +77,11 @@ class User extends Authenticatable
 
     /**
      * Verifica si el usuario es administrador.
+     *
+     * @return bool
      */
     public function isAdmin(): bool
     {
-        return $this->id === 12; // Convierte el valor explícitamente a booleano
+        return $this->id === 12; // Cambia '12' por el ID del administrador si es necesario
     }
 }

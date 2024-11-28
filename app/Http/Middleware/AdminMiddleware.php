@@ -3,22 +3,22 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Maneja una solicitud entrante.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle($request, Closure $next)
     {
-        // Verifica si el usuario está autenticado y es el administrador con ID 12
+        // Asegúrate de que el usuario esté autenticado y sea admin
         if (!Auth::check() || Auth::user()->id !== 12) {
-            abort(403, 'Acceso denegado. Solo los administradores pueden realizar esta acción.');
+            abort(403, 'Acceso denegado: Solo administradores pueden realizar esta acción.');
         }
 
         return $next($request);

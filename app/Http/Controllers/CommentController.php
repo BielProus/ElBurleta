@@ -67,11 +67,12 @@ class CommentController extends Controller
      */
     public function destroy(Comment $comment)
     {
-        // Aún no se ha creado un Admin con el id === 1 por eso sale error talvez.
-        if(!Auth::user()->isAdmin()){
-            return redirect()->back();
+        if (Auth::check() && Auth::user()->id === 12) {
+            $comment->delete();
+            return redirect()->back()->with('success', 'Comentario eliminado exitosamente.');
         }
-        $comment->delete();
-        return redirect()->back();
+        
+        return redirect()->back()->with('error', 'No tienes permiso para realizar esta acción.');
+        
     }
 }
