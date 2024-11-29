@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1 class="my-4">Blog_M7</h1>
+    <h1 class="my-4">ElBurleta</h1>
 
     <!-- Botón para crear un nuevo post -->
     <a href="{{ route('posts.create') }}" class="btn btn-success mb-3">Create</a>
@@ -10,7 +10,7 @@
     <!-- Lista de posts -->
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Posts</h5>
+            <h5 class="card-title">Jokes</h5>
             <ul class="list-group list-group-flush">
                 @foreach($posts as $post)
                     <li class="list-group-item d-flex justify-content-between align-items-center">
