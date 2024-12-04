@@ -9,8 +9,8 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 // Redirección de la raíz
 // -----------------------------
 Route::get('/', function () {
-    return redirect()->route('posts.index');
-});
+    return view('dashboard');
+})->name('home');
 
 
 // -----------------------------
