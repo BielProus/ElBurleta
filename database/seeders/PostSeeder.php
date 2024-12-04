@@ -117,7 +117,7 @@ class PostSeeder extends Seeder
             ],
             [
                 'title' => "Què fa un ou a l'espai? La resposta és increïble!",
-                'content' => "Què fa un ou a l’espai? Es converteix en un estel ou-nidós!"
+                'content' => "Què fa un ou a l’espai? Es converteix en un estel ou-nidós!!!"
             ]
         ];
         

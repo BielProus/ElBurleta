@@ -4,8 +4,10 @@
 <div class="container">
     <h1 class="my-4">ElBurleta</h1>
 
-    <!-- Botón para crear un nuevo post -->
-    <a href="{{ route('posts.create') }}" class="btn btn-success mb-3">Create</a>
+    <!-- Botón para crear un nuevo post: solo visible para el administrador -->
+    @if(Auth::check() && Auth::id() == 12)
+        <a href="{{ route('posts.create') }}" class="btn btn-success mb-3">Create</a>
+    @endif
 
     <!-- Lista de posts -->
     <div class="card">
@@ -19,15 +21,17 @@
                             {{ $post->title }}
                         </a>
 
-                        <!-- Botones Edit y Delete -->
-                        <div>
-                            <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-success">Edit</a>
-                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                            </form>
-                        </div>
+                        <!-- Botones Edit y Delete: solo visibles para el administrador -->
+                        @if(Auth::check() && Auth::id() == 12)
+                            <div>
+                                <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-success">Edit</a>
+                                <form action="{{ route('posts.destroy', $post->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                </form>
+                            </div>
+                        @endif
                     </li>
                 @endforeach
             </ul>
@@ -35,3 +39,4 @@
     </div>
 </div>
 @endsection
+
