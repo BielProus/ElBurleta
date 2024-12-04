@@ -22,7 +22,7 @@
 
         body {
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            background-image: url("cocker.jpg");
+            background-image: url("https://cdn.discordapp.com/attachments/1196206592056631396/1313894784016056461/cocker.jpg?ex=6751cb5f&is=675079df&hm=a2bee49aebf9e2b735ca45c0a34a1f23aa9db6249a93b7dafe2e4e1d2aa6959d&");
             background-size: cover;
             background-repeat: no-repeat;
         }
@@ -88,10 +88,9 @@
             @auth
                 ¡Bienvenido {{ Auth::user()->name }}!
             @else
-                ¡Bienvenido al Dashboard!
+                ¡BURLETA PIRULETA!
             @endauth
         </h2>
-        <a class="button" href="https://www.burleta.cat">Comença a riure</a>
     </div>
 
     <footer></footer>
