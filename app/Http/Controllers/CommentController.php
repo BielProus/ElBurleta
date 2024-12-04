@@ -30,13 +30,23 @@ class CommentController extends Controller
      */
     public function store(StoreCommentRequest $request)
     {
-        Comment::create([
+        // Create the comment first
+        $comment = Comment::create([
             'content' => $request->content,
             'post_id' => $request->post_id,
             'user_id' => Auth::id(),
         ]);
-        return redirect()->back();
+
+        // Handle tags if provided
+        if ($request->has('etiquetas')) {
+            // Assuming 'etiquetas' is an array of strings
+            $comment->etiquetas = json_encode($request->input('etiquetas'));
+            $comment->save();
+        }
+
+        return redirect()->back()->with('success', 'Comentario creado exitosamente.');
     }
+
 
     /**
      * Display the specified resource.

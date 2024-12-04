@@ -1,77 +1,80 @@
 @extends('layouts.app')
 
 @section('content')
-<!DOCTYPE html>
-<html lang="en">
+<div class="container py-5">
+    <!-- Main Title -->
+    <h1 class="text-center text-primary mb-4">{{ $post->title }}</h1>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $post->title }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
+    <!-- Post Details -->
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <!-- Information about the post -->
+            <div class="d-flex justify-content-between mb-4">
+                <span class="text-muted">Author: <b>{{ $post->user->name }}</b></span>
+                <span class="text-muted">Created at: {{ $post->created_at->format('Y-m-d') }}</span>
+            </div>
 
-<body class="bg-gray-100 text-gray-900">
-    <!-- Container principal centrado -->
-    <div class="max-w-4xl mx-auto py-8">
+            <!-- Content of the post -->
+            <div class="bg-light p-4 rounded-lg shadow-sm mb-5">
+                <p class="text-dark">{{ $post->content }}</p>
+            </div>
 
-        <!-- Título del post -->
-        <h1 class="text-4xl font-bold mb-4 text-center text-indigo-600">{{ $post->title }}</h1>
+            <!-- Tags (Etiquetas) -->
+            <div class="bg-light p-4 rounded-lg shadow-sm mb-5">
+                <h5 class="text-primary mb-3">Etiquetas</h5>
+                @if($post->etiquetas)
+                    <div class="d-flex flex-wrap gap-2">
+                        @foreach(json_decode($post->etiquetas) as $tag)
+                            <span class="badge bg-info text-dark">{{ $tag }}</span>
+                        @endforeach
+                    </div>
+                @else
+                    <span class="badge bg-secondary">No tags available</span>
+                @endif
+            </div>
 
-        <!-- Información adicional del post -->
-        <div class="flex justify-between items-center mb-4">
-            <span class="text-sm text-gray-500">Author: <b>{{ $post->user->name }}</b></span>
-            <span class="text-sm text-gray-500">Created at: {{ $post->created_at->format('Y-m-d') }}</span>
-        </div>
+            <!-- Comments Section -->
+            <div class="mt-5">
+                <h5 class="text-success mb-3">Comments</h5>
 
-        <!-- Contenido del post -->
-        <div class="bg-white p-6 rounded-lg shadow-md">
-            <p class="text-lg text-gray-700 mb-6">{{ $post->content }}</p>
-        </div>
+                <!-- Display comment form if the user is authenticated -->
+                @auth
+                    <form action="{{ route('comments.store') }}" method="POST" class="mb-4">
+                        @csrf
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <textarea name="content" class="form-control" placeholder="Add a comment..." required></textarea>
+                        <button type="submit" class="btn btn-primary mt-3">Submit</button>
+                    </form>
+                @else
+                    <!-- Show login message if the user is not authenticated -->
+                    <p class="text-danger mb-4">You need to be logged in to comment.</p>
+                    <a href="{{ route('login') }}" class="text-info">Login</a> or 
+                    <a href="{{ route('register') }}" class="text-info">create an account</a> to leave a comment.
+                @endauth
 
-        <!-- Comentarios -->
-        <div class="mt-8">
-            <h2 class="text-2xl font-semibold mb-4 text-indigo-500">Comments</h2>
-
-            <!-- Mostrar formulario de comentario si el usuario está autenticado -->
-            @auth
-                <form action="{{ route('comments.store') }}" method="POST" class="mb-4">
-                    @csrf
-                    <input type="hidden" name="post_id" value="{{ $post->id }}">
-                    <textarea name="content" class="w-full p-2 border rounded-md" placeholder="Add a comment..." required></textarea>
-                    <button type="submit" class="mt-2 bg-indigo-500 text-white font-semibold px-4 py-2 rounded">Submit</button>
-                </form>
-            @else
-                <!-- Mostrar mensaje de inicio de sesión si el usuario no está autenticado -->
-                <p class="text-red-500 mb-4">You need to be logged in to comment.</p>
-                <a href="{{ route('login') }}" class="text-indigo-500">Login</a> or 
-                <a href="{{ route('register') }}" class="text-indigo-500">create an account</a> to leave a comment.
-            @endauth
-
-            <!-- Lista de comentarios -->
-            <table class="min-w-full bg-white rounded-lg shadow-md mt-4">
-                <tbody>
-                    @foreach ($post->comments as $comment)
-                    <tr class="border-t">
-                        <td class="px-4 py-2 text-gray-700">{{ $comment->content }}</td>
-                        <td class="px-4 py-2 font-bold text-gray-900">{{ $comment->user->name }}</td>
-                        <!-- Verificar si el usuario es admin para mostrar el botón de eliminar -->
-                        @if(Auth::check() && Auth::user()->isAdmin())
-                        <td class="px-4 py-2">
-                            <form action="{{ route('comments.destroy', $comment) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-red-500">Delete</button>
-                            </form>
-                        </td>
-                        @endif
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                <!-- List of Comments -->
+                <table class="table table-bordered table-striped mt-4">
+                    <tbody>
+                        @foreach ($post->comments as $comment)
+                        <tr>
+                            <td class="text-dark">{{ $comment->content }}</td>
+                            <td class="font-weight-bold text-primary">{{ $comment->user->name }}</td>
+                            <!-- Only show delete option if the user is admin -->
+                            @if(Auth::check() && Auth::user()->isAdmin())
+                            <td>
+                                <form action="{{ route('comments.destroy', $comment) }}" method="POST" class="d-inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                            @endif
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</body>
-
-</html>
+</div>
 @endsection
