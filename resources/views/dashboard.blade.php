@@ -22,7 +22,7 @@
 
         body {
             font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-            background-image: url("https://cdn.discordapp.com/attachments/1196206592056631396/1313894784016056461/cocker.jpg?ex=6751cb5f&is=675079df&hm=a2bee49aebf9e2b735ca45c0a34a1f23aa9db6249a93b7dafe2e4e1d2aa6959d&");
+            background-image: url("{{ asset('images/cocker.jpg') }}");
             background-size: cover;
             background-repeat: no-repeat;
         }
@@ -82,6 +82,7 @@
     </nav>
 
     <div class="container">
+    <!-- IMAGE -->
         <h1>El Burleta</h1>
         <h2 class="text">
             <!-- Verificar si el usuario está autenticado -->
